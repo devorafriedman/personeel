@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments::head(titel='Jobtitels')"></head>
+<body>
+<nav th:replace="fragments::menu"></nav>
+<div class="container" style="margin-left: 30px">
+    <h1>Jobtitels</h1>
+    <ul class="nav" th:if="${!jobtitels.isEmpty()} ">
+        <li class="nav-item" th:each="titel:${jobtitels}" th:object="${titel}">
+            <a class="nav-link" th:href="@{/jobtitels/{id}(id=*{id})}" th:text="*{naam}"></a>
+        </li>
+    </ul>
+    <div th:if="${jobtitel}!=null" th:object="${jobtitel}">
+        <h1 th:text="*{naam}"></h1>
+        <div class="alert alert-info" th:if="${jobtitel.werknemers.isEmpty()}">We hebben momenteel helaas geen werknemers met deze jobtitel</div>
+        <ul th:if="${!jobtitel.werknemers.isEmpty()}">
+            <li th:each="werknemer:${jobtitel.werknemers}" th:object="${werknemer}">
+                <a th:href="@{/werknemers/{id}(id=*{id})}" th:text="|*{voornaam} *{familienaam}|"></a>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

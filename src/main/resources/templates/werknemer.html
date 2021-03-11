@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments::head(titel='werknemer')"></head>
+<body>
+<nav th:replace="fragments::menu"></nav>
+<div class="alert alert-warning" th:if="${werknemer}==null" th:text="|${id} is een ongeldige id: werknemer bestaat niet|"></div>
+<div class="container" style="margin-left: 30px" th:if="${werknemer}!=null" th:object="${werknemer}">
+    <div class="alert alert-success" th:if="${param.opslag}!=null">Uw loon is verhoogd met <span th:text="${param.opslag}">&euro;</span></div>
+    <h1 th:text="|*{voornaam} *{familienaam}|"></h1>
+    <dl>
+        <dt>Voornaam</dt>
+        <dd th:text="*{voornaam}"></dd>
+        <dt>Familienaam</dt>
+        <dd th:text="*{familienaam}"></dd>
+        <dt>Email Adres</dt>
+        <dd th:text="*{email}"></dd>
+        <dt>Salaris</dt>
+        <dd th:text="*{{salaris}}"></dd>
+        <dt>Jobtitel</dt>
+        <dd th:text="*{jobtitel.naam}"></dd>
+        <dt>Geboorte</dt>
+        <dd th:text="*{{geboorte}}"></dd>
+        <dl th:if="*{chef!=null}">
+            <dt>Chef</dt>
+            <dd><a th:href="@{/werknemers/{id} (id = *{chef.id})}" th:text="|*{chef.voornaam} *{chef.familienaam}|"></a>
+            </dd>
+        </dl>
+        <dl th:if="*{!ondergeschikten.isEmpty()}">
+            <dt>Ondergeschikten</dt>
+            <dd th:each="ondergeschikt:*{ondergeschikten}"><a th:href="@{/werknemers/{id} (id = ${ondergeschikt.id})}"
+                                                              th:text="|${ondergeschikt.voornaam} ${ondergeschikt.familienaam}|"></a>
+            </dd>
+        </dl>
+        <dt>Foto</dt>
+        <dd><img th:src="@{/images/{id}.jpg(id= *{id})}" th:alt="*{voornaam}"></dd>
+        <dt><a th:href="@{/werknemers/{id}/opslag (id = *{id})}">Opslag</a></dt>
+    </dl>
+</div>
+
+</body>
+</html>
